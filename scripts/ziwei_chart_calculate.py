@@ -14,9 +14,10 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import sys
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
-from typing import Any
+from typing import Any, Optional
 from zoneinfo import ZoneInfo
 
 from zhdate import ZhDate
@@ -747,6 +748,7 @@ def compute_chart(inp: ChartInput) -> dict[str, Any]:
     zodiac = ZODIAC_MAP.get(y_branch, "")
 
     out: dict[str, Any] = {
+        "schema_version": "mystilink.ziwei.chart/0.1",
         "solar_local": inp.local_dt.isoformat(),
         "solar_used_for_lunar": naive.isoformat(),
         "midnight_zi_rule": inp.midnight_zi,
@@ -860,9 +862,9 @@ def print_chart(data: dict[str, Any]) -> None:
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="紫微斗数排盘（完整星曜 + 大限流年 + 四柱）")
-    p.add_argument("--datetime", required=True, help='本地时间 "YYYY-MM-DD HH:MM"')
-    p.add_argument("--timezone", required=True, help="IANA 时区，如 Asia/Shanghai")
-    p.add_argument("--gender", required=True, choices=["male", "female"], help="性别")
+    p.add_argument("--datetime", required=False, default=None, help='本地时间 "YYYY-MM-DD HH:MM"')
+    p.add_argument("--timezone", required=False, default=None, help="IANA 时区，如 Asia/Shanghai")
+    p.add_argument("--gender", required=False, default=None, choices=["male", "female"], help="性别")
     p.add_argument(
         "--midnight-zi", choices=["same-day", "next-day"], default="same-day",
         help="23:00–01:00 子时与农历换日规则（默认 same-day）",
@@ -873,26 +875,92 @@ def build_parser() -> argparse.ArgumentParser:
         "--longitude", type=float, default=None,
         help="出生地经度（东经为正）。与 --timezone 同时提供时启用真太阳时修正",
     )
+    p.add_argument(
+        "--birth-json",
+        "--profile-json",
+        dest="birth_json",
+        default=None,
+        help="BirthProfile (mystilink.birth/0.1) 或旧 profile.json：文件路径 / '-' / 内联 JSON",
+    )
     p.add_argument("--output", choices=["text", "json"], default="text")
     p.add_argument("--output-file", help="JSON 时可写入文件")
     return p
 
 
+def _load_profile(raw: str) -> dict[str, Any]:
+    from pathlib import Path
+
+    if raw == "-":
+        text = sys.stdin.read()
+    else:
+        path = Path(raw)
+        text = path.read_text(encoding="utf-8") if path.is_file() else raw
+    data = json.loads(text)
+    if not isinstance(data, dict):
+        raise ValueError("profile JSON root must be an object")
+    return data
+
+
+def _resolve_from_profile(data: dict[str, Any]) -> tuple[str, str, str, Optional[float]]:
+    """Return (datetime_str, timezone, gender, longitude)."""
+    if data.get("schema_version") == "mystilink.birth/0.1" or (
+        isinstance(data.get("birth"), dict) and "datetime" in data["birth"]
+    ):
+        birth = data["birth"]
+        tz = birth["timezone"]
+        dt_raw = str(birth["datetime"]).strip().replace("Z", "+00:00")
+        instant = datetime.fromisoformat(dt_raw)
+        if instant.tzinfo is None:
+            raise ValueError("birth.datetime must include a timezone offset")
+        datetime_str = (
+            f"{instant.year:04d}-{instant.month:02d}-{instant.day:02d} "
+            f"{instant.hour:02d}:{instant.minute:02d}"
+        )
+        gender = data.get("gender")
+        if gender not in ("male", "female"):
+            raise ValueError("BirthProfile gender must be male or female for Zi Wei")
+        lon = birth.get("longitude")
+        if lon is None and isinstance(data.get("place"), dict):
+            lon = data["place"].get("lon")
+        return datetime_str, tz, gender, float(lon) if lon is not None else None
+
+    if "datetime" not in data or "timezone" not in data or "gender" not in data:
+        raise ValueError("unsupported profile: need BirthProfile or legacy datetime/timezone/gender")
+    gender = data["gender"]
+    if gender not in ("male", "female"):
+        raise ValueError("gender must be male or female")
+    lon = data.get("longitude")
+    return str(data["datetime"]), str(data["timezone"]), gender, float(lon) if lon is not None else None
+
+
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
+
+    datetime_str = args.datetime
+    timezone = args.timezone
+    gender = args.gender
+    longitude = args.longitude
+
     try:
-        local_dt = parse_local_datetime(args.datetime, args.timezone)
-    except ValueError as exc:
-        raise SystemExit(f"时间格式错误: {exc}") from exc
+        if args.birth_json:
+            profile = _load_profile(args.birth_json)
+            datetime_str, timezone, gender, lon = _resolve_from_profile(profile)
+            if longitude is None:
+                longitude = lon
+        if not datetime_str or not timezone or gender not in ("male", "female"):
+            raise ValueError("either --datetime/--timezone/--gender or --birth-json is required")
+        local_dt = parse_local_datetime(datetime_str, timezone)
+    except (ValueError, json.JSONDecodeError, OSError) as exc:
+        raise SystemExit(f"输入错误: {exc}") from exc
 
     chart = compute_chart(ChartInput(
         local_dt=local_dt,
         midnight_zi=args.midnight_zi,
-        gender=args.gender,
+        gender=gender,
         include_si_hua=args.si_hua,
         target_year=args.year,
-        longitude=args.longitude,
+        longitude=longitude,
     ))
 
     if args.output == "json":

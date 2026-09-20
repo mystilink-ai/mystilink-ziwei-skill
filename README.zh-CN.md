@@ -38,6 +38,10 @@ python3 scripts/ziwei_chart_calculate.py \
   --timezone Asia/Shanghai \
   --gender female \
   --output json
+
+python3 scripts/ziwei_chart_calculate.py \
+  --birth-json examples/profile.v0.json \
+  --output json
 ```
 
 可选：`--si-hua`、`--year YYYY`、`--longitude E`、`--midnight-zi`。
@@ -46,7 +50,7 @@ python3 scripts/ziwei_chart_calculate.py \
 
 ## 工作流
 
-1. 采集本地时、IANA 时区、性别（见 `examples/profile.json`）
+1. 采集出生资料——`examples/profile.v0.json`（BirthProfile）或旧版 `examples/profile.json`
 2. 运行排盘脚本
 3. 可选 Wiki：
 
@@ -61,7 +65,8 @@ GET https://wiki.mystilink.com/api/v1/pages/ziwei.concept.ming-gong?locale=en
 
 ## 示例
 
-- `examples/profile.json` — 虚构输入样例
+- `examples/profile.v0.json` — BirthProfile（`mystilink.birth/0.1`，虚构）
+- `examples/profile.json` — 旧版虚构输入样例
 
 ## 限制
 

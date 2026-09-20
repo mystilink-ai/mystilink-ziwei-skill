@@ -38,6 +38,10 @@ python3 scripts/ziwei_chart_calculate.py \
   --timezone Asia/Shanghai \
   --gender female \
   --output json
+
+python3 scripts/ziwei_chart_calculate.py \
+  --birth-json examples/profile.v0.json \
+  --output json
 ```
 
 Optional flags: `--si-hua`, `--year YYYY`, `--longitude E`, `--midnight-zi`.
@@ -46,7 +50,7 @@ Success: JSON on stdout. Failure: non-zero exit + JSON error.
 
 ## Workflow
 
-1. Collect local datetime, IANA timezone, gender (see `examples/profile.json`)
+1. Collect birth data — `examples/profile.v0.json` (BirthProfile) or legacy `examples/profile.json`
 2. Run the chart script
 3. Optional Wiki:
 
@@ -61,7 +65,8 @@ Details: `SKILL.md`. Orientation: `references/overview.md`.
 
 ## Examples
 
-- `examples/profile.json` — fictional birth inputs
+- `examples/profile.v0.json` — BirthProfile (`mystilink.birth/0.1`, fictional)
+- `examples/profile.json` — legacy fictional birth inputs
 
 ## Limits
 
