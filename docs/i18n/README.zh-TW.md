@@ -6,6 +6,11 @@
 
 紫微斗數 Agent Skill：用內嵌 Python 腳本排出十二宮盤（可選四化），再結合理論詞條解讀。排盤邏輯在 `scripts/`。
 
+## 相關位址
+
+- Agent：https://www.mystilink.com
+- 理論 Wiki：https://wiki.mystilink.com（API `/api/v1`）
+
 ## 交付類型
 
 **Agent Skill** 包。**不適用**計算器語言矩陣（C / C++ / C# / Java / JS / Python SDK）。可選同系列：`mystilink-ziwei-calculator`。

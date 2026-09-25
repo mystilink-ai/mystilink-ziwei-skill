@@ -6,6 +6,11 @@
 
 Agent Skill pour Zi Wei Dou Shu : construit un thème à douze palais (Si Hua optionnelle) avec un script Python intégré, puis interprète avec des pages théoriques. Le calcul de thème est sous `scripts/`.
 
+## Points d’accès
+
+- Agent : https://www.mystilink.com
+- Wiki théorique : https://wiki.mystilink.com (API `/api/v1`)
+
 ## Type de livraison
 
 Paquet **Agent Skill**. N’implémente **pas** la matrice de langages des calculatrices (C / C++ / C# / Java / JS / Python SDK). Frère optionnel : `mystilink-ziwei-calculator`.

@@ -6,6 +6,11 @@
 
 Agent Skill para Zi Wei Dou Shu: construye una carta de doce palacios (Si Hua opcional) con un script Python embebido, luego interpreta con páginas teóricas. El cálculo de carta está en `scripts/`.
 
+## Puntos de acceso
+
+- Agent: https://www.mystilink.com
+- Wiki teórica: https://wiki.mystilink.com (API `/api/v1`)
+
 ## Tipo de entrega
 
 Paquete **Agent Skill**. **No** implementa la matriz de lenguajes de calculadoras (C / C++ / C# / Java / JS / Python SDK). Hermano opcional: `mystilink-ziwei-calculator`.

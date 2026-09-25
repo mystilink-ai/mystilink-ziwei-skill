@@ -6,6 +6,11 @@
 
 자미두수 Agent Skill: 내장 Python 스크립트로 십이궁 차트(선택적 사화)를 만든 뒤 이론 페이지로 해석합니다. 차트 계산은 `scripts/`에 있습니다.
 
+## 엔드포인트
+
+- Agent: https://www.mystilink.com
+- 이론 Wiki: https://wiki.mystilink.com (API `/api/v1`)
+
 ## 배포 유형
 
 **Agent Skill** 패키지. 계산기 언어 매트릭스(C / C++ / C# / Java / JS / Python SDK)는 **적용되지 않습니다**. 선택적 동계열: `mystilink-ziwei-calculator`.

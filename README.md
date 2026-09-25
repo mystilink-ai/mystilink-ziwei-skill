@@ -6,6 +6,11 @@
 
 Agent Skill for Zi Wei Dou Shu: build a twelve-palace chart (optional Si Hua) with an embedded Python script, then interpret with theory pages. Chart math lives under `scripts/`.
 
+## Endpoints
+
+- Agent: https://www.mystilink.com
+- Theory Wiki: https://wiki.mystilink.com (API `/api/v1`)
+
 ## Delivery type
 
 **Agent Skill** package. Does **not** implement the calculator language matrix (C / C++ / C# / Java / JS / Python SDK). Optional sibling: `mystilink-ziwei-calculator`.

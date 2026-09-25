@@ -6,6 +6,11 @@
 
 紫微斗数向け Agent Skill：内嵌 Python スクリプトで十二宮盤（任意で四化）を作成し、理論ページで解釈します。盤計算は `scripts/` にあります。
 
+## エンドポイント
+
+- Agent：https://www.mystilink.com
+- 理論 Wiki：https://wiki.mystilink.com（API `/api/v1`）
+
 ## 配布形態
 
 **Agent Skill** パッケージ。計算機の言語マトリクス（C / C++ / C# / Java / JS / Python SDK）は **適用しません**。任意の同系列：`mystilink-ziwei-calculator`。
