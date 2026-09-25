@@ -9,6 +9,7 @@ compatibility: "python3; pip package zhdate; network optional for wiki API"
 metadata:
   mystilink:
     system: ziwei
+    version: 0.1.0
     about: "Local Zi Wei twelve-palace chart script (optional Si Hua) plus optional Mystilink Wiki theory pages."
     wiki_base: https://wiki.mystilink.com
     wiki_api: /api/v1
