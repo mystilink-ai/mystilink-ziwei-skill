@@ -79,6 +79,10 @@ Detalles: `SKILL.md`. Orientación: `references/overview.md`.
 - Script embebido para uso skill autónomo, no un SDK multiidioma
 - Locale Wiki omitida → `en`; el respaldo puede ser `zh-Hans`
 
+## Versión
+
+Versión de la skill: `0.1.0`, registrada en `SKILL.md` bajo `metadata.mystilink.version` y en [CHANGELOG.md](../../CHANGELOG.md).
+
 ## Licencia
 
 MIT. Véase [LICENSE](../../LICENSE).

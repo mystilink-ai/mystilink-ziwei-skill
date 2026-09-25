@@ -79,6 +79,10 @@ GET https://wiki.mystilink.com/api/v1/pages/ziwei.concept.ming-gong?locale=en
 - 단독 skill용 내장 스크립트이며 다언어 SDK가 아님
 - Wiki locale 생략 → `en`; 폴백은 `zh-Hans`일 수 있음
 
+## 버전
+
+스킬 버전은 `0.1.0`이며, `SKILL.md`의 `metadata.mystilink.version`에 기록되고 [CHANGELOG.md](../../CHANGELOG.md)에도 정리되어 있습니다.
+
 ## 라이선스
 
 MIT. [LICENSE](../../LICENSE) 참고.
